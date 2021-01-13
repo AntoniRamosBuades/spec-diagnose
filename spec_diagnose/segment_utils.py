@@ -9,8 +9,8 @@ import numpy as np
 def FindLatestSegments(EvDir, Lev, tmin=-1e10, tmax=1e10, WithRingdown=True):
     """
 Search through a usual SpEC segment structure, to find all
-segments with start-time tmin < tastart < tmax.  Negative 
-tmin count from the end of the run, e.g. use tmin=-20 to 
+segments with start-time tmin < tastart < tmax.  Negative
+tmin count from the end of the run, e.g. use tmin=-20 to
 find the very last few segments.
 
 if WithRingdown==False, exclude ringdown segments
@@ -158,7 +158,10 @@ OPTIONS:
                     if not field in D:
                         D[field]={}
                     for i,legend in enumerate(F[k].attrs['Legend']):
-                        legend=legend.decode("utf-8")
+                        try: # Add this try to avoid errors found with some conda environments
+                            legend=legend.decode("utf-8")
+                        except:
+                            pass
                         if legend in D[field]:
                             D[field][legend]=np.concatenate((D[field][legend],
                                                              data[:,[0,i]]))
@@ -295,7 +298,7 @@ Load some important files for a certain Ev/Lev*, and populate a
 dictionary with the imported data as follows
 """
     D={}
-    segs,tstart,termination=FindLatestSegments(path_to_ev,Lev, tmin=tmin, tmax=tmax) 
+    segs,tstart,termination=FindLatestSegments(path_to_ev,Lev, tmin=tmin, tmax=tmax)
     D['segs']=segs
     D['tstart']=tstart
     print("tstart={}".format(tstart))
