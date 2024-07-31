@@ -154,7 +154,7 @@ Make a plot of constraints.
 
 
 
-def PlotAH(ax, AH_dat, NormalizeRadii=True, title=None):
+def PlotAH(ax, AH_dat, NormalizeRadii=True, title=None,colors=['r','g']):
     """PlotAH(ax, AH)
     plot useful information about an apparent horizon.
     ax - axis object into which to plot the data
@@ -169,16 +169,18 @@ def PlotAH(ax, AH_dat, NormalizeRadii=True, title=None):
         norm=1.
         label_postfix=''
 
+    ii=0
     for q in 'min', 'max':
         # get a color for both curves
-        color=next(ax._get_lines.prop_cycler)['color']
+        color= colors[ii]
         tmp=q+'(r)'
         d=AH_dat[tmp]
         ax.plot(d[:,0],d[:,1]/norm,color=color, label=tmp+label_postfix)
         tmp=q+'(|r^i-c^i|)'
         d=AH_dat[tmp]
         ax.plot(d[:,0],d[:,1]/norm, '--', color=color, label=tmp+label_postfix)
-
+        ii+=1
+        
     # plot remaining quantities
     d=AH_dat['sqrt(Area/16pi)']
     ax.plot(d[:,0],d[:,1],label='Mirr')
